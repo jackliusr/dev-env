@@ -1,2 +1,6 @@
-= My development, blogging, and writing environments: 
-development environments: vagrant, docker, kubernetes
+= My development, blogging, and writing environments
+
+Development environments: vagrant, docker, kubernetes
+blogging: github.io, jekyll and asciidoc
+writing: latex, asciidoc
+Coding Env: C/C++, rust, golang, clojure,java, javascript, typescript
