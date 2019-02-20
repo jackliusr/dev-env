@@ -1,0 +1,14 @@
+---
+
+- name: run the playbook tasks on the localhost
+  hosts: all  
+  become: yes
+  become_method: sudo
+  tasks:
+  - name:  Installing packages
+    dnf:
+      name:
+        - neovim
+        - emacs
+        - git      
+      state: present

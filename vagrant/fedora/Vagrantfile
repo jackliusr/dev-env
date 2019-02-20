@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|
+ 
+  config.vm.box = "bento/fedora-29"
+  config.vm.box_version = "201812.27.0"
+  
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+  
+    vb.memory = "4096"
+    vb.cpus = "4"
+  end
+  
+  ### bootstrap (fixes) https://github.com/darkn3rd/hello_web/blob/master/vagrant-ansible/fedora-28/Vagrantfile  ###
+  config.vm.provision "shell",
+    inline: "/usr/bin/dnf install -y libselinux-python"
+	
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "playbook.yml"
+  end
+end
