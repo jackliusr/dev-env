@@ -5,10 +5,45 @@
   become: yes
   become_method: sudo
   tasks:
+    # package module can be used to install packages, however package names are not same across distros 
   - name:  Installing packages
     dnf:
       name:
+        - vim
         - neovim
         - emacs
         - git      
+        - '@gnome-desktop'
+        - '@Development tools'
       state: present
+
+  - name: spacemacs
+    git:
+      repo: 'https://github.com/syl20bnr/spacemacs.git'
+      dest: /home/vagrant/.emacs.d
+
+  - name: change owner of emacs.d
+    file: dest=/home/vagrant/.emacs.d owner=vagrant group=vagrant recurse=yes
+    
+  # https://unix.stackexchange.com/questions/186198/not-able-to-boot-into-graphical-environment-in-fedora
+  - name: start gdm.service
+    service:
+      name: gdm.service
+      state: started
+      enabled: yes
+
+  - name: get default runlevel
+    command: systemctl get-default
+    register: runlevel
+
+  - name: Set graphical runlevel
+    command: systemctl set-default graphical.target
+    when: runlevel.stdout != "graphical.target"
+
+  - name: is graphical currently active
+    command: systemctl is-active graphical.target
+    register: graphical
+
+  - name: Switch to graphical runlevel
+    command: systemctl isolate graphical.target
+    when: graphical.stdout != "active"

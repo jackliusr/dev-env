@@ -12,6 +12,10 @@ Vagrant.configure("2") do |config|
   
     vb.memory = "4096"
     vb.cpus = "4"
+    # fix the issue failed to switch graphic mode with error Failed to set CRTC mode  29  Invalid argument gnome-shell virtualbox
+    # https://forums.virtualbox.org/viewtopic.php?f=3&t=90372
+    # https://stackoverflow.com/questions/24231620/how-to-set-vagrant-virtualbox-video-memory
+    vb.customize ["modifyvm", :id, "--vram", "32"]
   end
   
   ### bootstrap (fixes) https://github.com/darkn3rd/hello_web/blob/master/vagrant-ansible/fedora-28/Vagrantfile  ###
